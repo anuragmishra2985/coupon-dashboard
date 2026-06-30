@@ -431,7 +431,7 @@ function rBR(d){
       +'<td class="r">'+fr(a)+'</td>'
       +'<td class="r">'+(b.G?fp(b.R/b.G):'-')+'</td>'
       +'<td class="r">'+(b.G?fp(b.D/b.G):'-')+'</td>'
-      +'<td class="r">'+(b.T?fp((b.nw+b.rc)/b.T):'-')+'</td>'
+      +'<td class="r">'+(b.T?fp(b.nw/b.T):'-')+'</td>'
       +'<td><span class="pill '+(pos?'pg':'pr')+'">'+(pos?'Profit':'Loss')+'</span></td></tr>';
   });
   h+='<tr style="background:#1c2128;font-weight:700"><td colspan="2" style="color:#58a6ff;font-size:10px">GRAND TOTAL</td>'
@@ -444,7 +444,7 @@ function rBR(d){
     +'<td class="r">'+fr(tot.G/tot.T)+'</td>'
     +'<td class="r">'+fp(tot.R/tot.G)+'</td>'
     +'<td class="r">'+fp(tot.D/tot.G)+'</td>'
-    +'<td class="r">'+fp((tot.nw+tot.rc)/tot.T)+'</td><td></td></tr>';
+    +'<td class="r">'+fp(tot.nw/tot.T)+'</td><td></td></tr>';
   document.getElementById('brTB').innerHTML=h;
 }
 
@@ -495,7 +495,7 @@ function rCM(d){
   // Detail table
   var recs=['Reduce discount cap','Review coupon value','Audit promo structure','Cap per-user discount','Tighten eligibility','Revisit partner deal'];
   var h=neg.map(function(b,i){
-    var nu=b.nw+b.rc;
+    var nu=b.nw;
     return '<tr>'
       +'<td class="gy">'+(i+1)+'</td>'
       +'<td style="font-weight:700;color:#f85149">&#9888; '+b.k+'</td>'
