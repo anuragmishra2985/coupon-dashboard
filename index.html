@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded',function(){
   <div class="kpi" style="--c:#d29922"><div class="klbl">Gross Revenue</div><div class="kval" id="k2">-</div><div class="ksub">Total GR</div></div>
   <div class="kpi" style="--c:#f85149"><div class="klbl">CM1</div><div class="kval" id="k3">-</div><div class="ksub">Contribution Margin</div></div>
   <div class="kpi" style="--c:#db6d28"><div class="klbl">Total Discount</div><div class="kval" id="k4">-</div><div class="ksub">Instant Discount</div></div>
-  <div class="kpi" style="--c:#bc8cff"><div class="klbl">New Users</div><div class="kval" id="k5">-</div><div class="ksub">New + Reactivated</div></div>
+  <div class="kpi" style="--c:#bc8cff"><div class="klbl">New Users</div><div class="kval" id="k5">-</div><div class="ksub">Excl. Reactivated</div></div>
   <div class="kpi" style="--c:#39d353"><div class="klbl">Avg ATV</div><div class="kval" id="k6">-</div><div class="ksub">Avg Ticket Value</div></div>
   <div class="kpi" style="--c:#58a6ff"><div class="klbl">GR %</div><div class="kval" id="k7">-</div><div class="ksub">GR as % of GMV</div></div>
   <div class="kpi" style="--c:#f0883e"><div class="klbl">Disc % GMV</div><div class="kval" id="k8">-</div><div class="ksub">Discount as % GMV</div></div>
@@ -363,13 +363,12 @@ function rKPI(d){
   d.forEach(function(r){T+=r.TXN||0;G+=r.total_order_amount||0;R+=r.GR||0;C+=r.CM1||0;D+=r.instant_discount||0;
     if(r.USERTYPE==='newUser')nw++;else if(r.USERTYPE==='Reactivated')rc++;else ol++;
   });
-  var N=nw+rc;
   document.getElementById('k0').textContent=fn(T);
   document.getElementById('k1').textContent=fv(G);
   document.getElementById('k2').textContent=fv(R);
   var cm=document.getElementById('k3');cm.textContent=fv(C);cm.style.color=C>=0?'#3fb950':'#f85149';
   document.getElementById('k4').textContent=fv(D);
-  document.getElementById('k5').textContent=fn(N);
+  document.getElementById('k5').textContent=fn(nw);
   document.getElementById('k6').textContent=T?fv(G/T):'-';
   document.getElementById('k7').textContent=G?fp(R/G):'-';
   document.getElementById('k8').textContent=G?fp(D/G):'-';
