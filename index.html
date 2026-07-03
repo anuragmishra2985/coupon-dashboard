@@ -119,21 +119,21 @@ document.addEventListener('DOMContentLoaded',function(){
 
 <div class="hdr">
   <div><h1>&#127915; Coupon Partner Performance Dashboard</h1>
-  <div class="sub">All Partners | 2026-04-01 to 2026-06-23 | 14 Brands | 990 Unique Coupon Codes</div></div>
+  <div class="sub">All Partners | 2026-04-01 to 2026-06-30 | 14 Brands | 990 Unique Coupon Codes</div></div>
   <div style="text-align:right"><div class="live">&#9679; Live Data</div><div style="color:#484f58;font-size:9px;margin-top:3px">Source: Flight Booking DB</div></div>
 </div>
 
 <div class="filters">
   <span class="fl">Quick:</span>
-  <button class="qbtn" onclick="qs(this,'2026-06-23','2026-06-23')">Today</button>
-  <button class="qbtn" onclick="qs(this,'2026-06-16','2026-06-23')">Last 7 Days</button>
-  <button class="qbtn" onclick="qs(this,'2026-05-24','2026-06-23')">Last 30 Days</button>
+  <button class="qbtn" onclick="qs(this,'2026-06-30','2026-06-30')">Today</button>
+  <button class="qbtn" onclick="qs(this,'2026-06-23','2026-06-30')">Last 7 Days</button>
+  <button class="qbtn" onclick="qs(this,'2026-05-31','2026-06-30')">Last 30 Days</button>
   <button class="qbtn" onclick="qs(this,'2026-04-01','2026-04-30')">Apr 2026</button>
   <button class="qbtn" onclick="qs(this,'2026-05-01','2026-05-31')">May 2026</button>
-  <button class="qbtn" onclick="qs(this,'2026-06-01','2026-06-23')">Jun 2026</button>
-  <button class="qbtn on" id="qAll" onclick="qs(this,'2026-04-01','2026-06-23')">All (Apr-Jun)</button>
+  <button class="qbtn" onclick="qs(this,'2026-06-01','2026-06-30')">Jun 2026</button>
+  <button class="qbtn on" id="qAll" onclick="qs(this,'2026-04-01','2026-06-30')">All (Apr-Jun)</button>
   <span class="fl" style="margin-left:4px">From</span><input type="date" id="fd" value="2026-04-01">
-  <span class="fl">To</span><input type="date" id="td" value="2026-06-23">
+  <span class="fl">To</span><input type="date" id="td" value="2026-06-30">
   <span class="fl">Brand</span><select id="bf"><option>All</option></select>
   <span class="fl">Airline</span><select id="af"><option>All</option></select>
   <span class="fl">Trip</span>
