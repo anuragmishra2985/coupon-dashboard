@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <!-- BRAND BREAKDOWN -->
 <div class="pane" id="pbr">
   <div class="tw"><table>
-    <thead><tr><th>#</th><th>Brand</th><th class="r">TXN</th><th class="r">GMV</th><th class="r">Discount</th><th class="r">GR</th><th class="r">CM1</th><th class="r">New Users</th><th class="r">Old Users</th><th class="r">Reactivated</th><th class="r">ATV</th><th class="r">GR%</th><th class="r">Disc%</th><th class="r">New%</th><th>Status</th></tr></thead>
+    <thead><tr><th>#</th><th>Brand</th><th class="r">TXN</th><th class="r">GMV</th><th class="r">Discount</th><th class="r">GR</th><th class="r">CM1</th><th class="r">New Users</th><th class="r">Old Users</th><th class="r">Reactivated</th><th class="r">ATV</th><th class="r">GR/TXN</th><th class="r">GR%</th><th class="r">Disc/TXN</th><th class="r">Disc%</th><th class="r">New%</th><th class="r">New AcCost</th><th class="r">CPA</th><th>Status</th></tr></thead>
     <tbody id="brTB"></tbody>
   </table></div>
 </div>
@@ -326,10 +326,10 @@ function grpByFull(data,key){
   var m={};
   data.forEach(function(r){
     var k=r[key]||'Unknown';
-    if(!m[k])m[k]={k:k,T:0,G:0,R:0,C:0,D:0,nw:0,ol:0,rc:0};
+    if(!m[k])m[k]={k:k,T:0,G:0,R:0,C:0,D:0,nw:0,ol:0,rc:0,N:0};
     m[k].T+=r.TXN||0;m[k].G+=r.total_order_amount||0;m[k].R+=r.GR||0;
     m[k].C+=r.CM1||0;m[k].D+=r.instant_discount||0;
-    if(r.USERTYPE==='newUser')m[k].nw+=1;
+    if(r.USERTYPE==='newUser'){m[k].nw+=1;m[k].N+=1;}
     else if(r.USERTYPE==='Reactivated')m[k].rc+=1;
     else m[k].ol+=1;
   });
@@ -430,9 +430,13 @@ function rBR(d){
       +'<td class="r" style="color:#3fb950">'+fn(b.ol)+'</td>'
       +'<td class="r" style="color:#d29922">'+fn(b.rc)+'</td>'
       +'<td class="r">'+fr(a)+'</td>'
-      +'<td class="r">'+(b.G?fp(b.R/b.G):'-')+'</td>'
-      +'<td class="r">'+(b.G?fp(b.D/b.G):'-')+'</td>'
       +'<td class="r">'+(b.T?fp(b.nw/b.T):'-')+'</td>'
+      +'<td class="r">'+(b.T?fr(b.R/b.T):'-')+'</td>'
+      +'<td class="r">'+(b.G?fp(b.R/b.G):'-')+'</td>'
+      +'<td class="r">'+(b.T?fr(b.D/b.T):'-')+'</td>'
+      +'<td class="r">'+(b.G?fp(b.D/b.G):'-')+'</td>'
+      +'<td class="r">'+(b.nw?fr(b.C/b.nw):'-')+'</td>'
+      +'<td class="r '+(b.nw&&b.C/b.nw>=0?'g':'rd')+'">"'+(b.nw?fr(b.C/b.nw):'-')+'</td>'
       +'<td><span class="pill '+(pos?'pg':'pr')+'">'+(pos?'Profit':'Loss')+'</span></td></tr>';
   });
   h+='<tr style="background:#1c2128;font-weight:700"><td colspan="2" style="color:#58a6ff;font-size:10px">GRAND TOTAL</td>'
@@ -443,9 +447,14 @@ function rBR(d){
     +'<td class="r" style="color:#3fb950">'+fn(tot.ol)+'</td>'
     +'<td class="r" style="color:#d29922">'+fn(tot.rc)+'</td>'
     +'<td class="r">'+fr(tot.G/tot.T)+'</td>'
+    +'<td class="r">'+fp(tot.nw/tot.T)+'</td>'
+    +'<td class="r">'+fr(tot.R/tot.T)+'</td>'
     +'<td class="r">'+fp(tot.R/tot.G)+'</td>'
+    +'<td class="r">'+fr(tot.D/tot.T)+'</td>'
     +'<td class="r">'+fp(tot.D/tot.G)+'</td>'
-    +'<td class="r">'+fp(tot.nw/tot.T)+'</td><td></td></tr>';
+    +'<td class="r">'+(tot.nw?fr(tot.C/tot.nw):'-')+'</td>'
+    +'<td class="r">'+(tot.nw?fr(tot.C/tot.nw):'-')+'</td>'
+    +'<td></td></tr>';
   document.getElementById('brTB').innerHTML=h;
 }
 
