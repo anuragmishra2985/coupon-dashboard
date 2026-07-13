@@ -120,7 +120,10 @@ document.addEventListener('DOMContentLoaded',function(){
 <div class="hdr">
   <div><h1>&#127915; Coupon Partner Performance Dashboard</h1>
   <div class="sub">All Partners | 2026-04-01 to 2026-07-13 | 15 Brands | 1,022 Unique Coupon Codes</div></div>
-  <div style="text-align:right"><div style="color:#484f58;font-size:9px;margin-top:3px">Source: Flight Booking DB</div></div>
+  <div style="text-align:right;display:flex;align-items:center;gap:10px">
+    <button onclick="dlExcel()" title="Download Excel" style="background:#238636;color:#fff;border:none;padding:5px 12px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:700;display:flex;align-items:center;gap:5px">&#11123; Excel</button>
+    <div style="color:#484f58;font-size:9px">Source: Flight Booking DB</div>
+  </div>
 </div>
 
 <div class="filters">
@@ -352,6 +355,49 @@ function qs(el,f,t){document.querySelectorAll('.qbtn').forEach(function(b){b.cla
 function resetF(){document.getElementById('fd').value='2026-04-01';document.getElementById('td').value='2026-06-23';document.getElementById('bf').value='All';document.getElementById('af').value='All';tripF='all';document.querySelectorAll('.sb').forEach(function(b){b.classList.remove('on');});document.getElementById('sAll').classList.add('on');document.querySelectorAll('.qbtn').forEach(function(b){b.classList.remove('on');});document.getElementById('qAll').classList.add('on');FD=RAW.slice();renderAll();}
 function st(el,t){tripF=t;document.querySelectorAll('.sb').forEach(function(b){b.classList.remove('on');});el.classList.add('on');}
 function showTab(id,el){document.querySelectorAll('.pane').forEach(function(p){p.classList.remove('on');});document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});document.getElementById('p'+id).classList.add('on');el.classList.add('on');setTimeout(renderAll,30);}
+
+function dlExcel(){
+  var brands=grpByFull(FD,'BRANDNAME');
+  var fd=document.getElementById('fd').value,td=document.getElementById('td').value;
+  var rows=[['Brand','TXN','GMV','Discount','GR','CM1','New Users','Old Users','Reactivated','ATV','GR/TXN','GR%','Disc/TXN','Disc% of GR','New%','New AcCost','CPA']];
+  brands.forEach(function(b){
+    var atv=b.T?b.G/b.T:0;
+    rows.push([
+      b.k,
+      b.T,
+      Math.round(b.G),
+      Math.round(b.D),
+      Math.round(b.R),
+      Math.round(b.C),
+      b.nw,
+      b.ol,
+      b.rc,
+      Math.round(atv),
+      b.T?Math.round(b.R/b.T):'',
+      b.G?(b.R/b.G*100).toFixed(1)+'%':'',
+      b.T?Math.round(b.D/b.T):'',
+      b.R?(b.D/b.R*100).toFixed(1)+'%':'',
+      b.T?(b.nw/b.T*100).toFixed(1)+'%':'',
+      b.nw?Math.round(b.C/b.nw):'',
+      b.nw?Math.round(b.C/b.nw):''
+    ]);
+  });
+  // Totals row
+  var tT=0,tG=0,tD=0,tR=0,tC=0,tNw=0,tOl=0,tRc=0;
+  brands.forEach(function(b){tT+=b.T;tG+=b.G;tD+=b.D;tR+=b.R;tC+=b.C;tNw+=b.nw;tOl+=b.ol;tRc+=b.rc;});
+  rows.push(['TOTAL',tT,Math.round(tG),Math.round(tD),Math.round(tR),Math.round(tC),tNw,tOl,tRc,
+    tT?Math.round(tG/tT):'',tT?Math.round(tR/tT):'',tG?(tR/tG*100).toFixed(1)+'%':'',
+    tT?Math.round(tD/tT):'',tR?(tD/tR*100).toFixed(1)+'%':'',
+    tT?(tNw/tT*100).toFixed(1)+'%':'',tNw?Math.round(tC/tNw):'',tNw?Math.round(tC/tNw):''
+  ]);
+  var csv=rows.map(function(r){return r.map(function(c){return '"'+String(c).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var bom='﻿';
+  var blob=new Blob([bom+csv],{type:'text/csv;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;a.download='CouponDashboard_'+fd+'_to_'+td+'.csv';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+}
 
 var GC='#21262d',TC='#484f58';
 function mkBar(id,labels,vals,color){try{var el=document.getElementById(id);if(!el)return;if(CH[id])try{CH[id].destroy();}catch(x){}CH[id]=new Chart(el,{type:'bar',data:{labels:labels,datasets:[{data:vals,backgroundColor:typeof color==='string'?color:['#58a6ff','#3fb950','#d29922','#f85149','#bc8cff','#f0883e','#39d353','#56d364','#388bfd','#db6d28'],borderRadius:3,borderSkipped:false}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:GC},ticks:{color:TC,font:{size:10}},border:{color:GC}},y:{grid:{color:GC},ticks:{color:'#c9d1d9',font:{size:10}},border:{color:GC}}}}});}catch(e){console.warn('mkBar error:',id,e);}}
