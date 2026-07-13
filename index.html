@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded',function(){
   <div class="kpi" style="--c:#bc8cff"><div class="klbl">New Users</div><div class="kval" id="k5">-</div><div class="ksub">Excl. Reactivated</div></div>
   <div class="kpi" style="--c:#39d353"><div class="klbl">Avg ATV</div><div class="kval" id="k6">-</div><div class="ksub">Avg Ticket Value</div></div>
   <div class="kpi" style="--c:#58a6ff"><div class="klbl">GR %</div><div class="kval" id="k7">-</div><div class="ksub">GR as % of GMV</div></div>
-  <div class="kpi" style="--c:#f0883e"><div class="klbl">Disc % GMV</div><div class="kval" id="k8">-</div><div class="ksub">Discount as % GMV</div></div>
+  <div class="kpi" style="--c:#f0883e"><div class="klbl">Disc % GR</div><div class="kval" id="k8">-</div><div class="ksub">Discount as % of GR</div></div>
   <div class="kpi" style="--c:#f85149"><div class="klbl">Negative CM15 Brands</div><div class="kval" id="k10">-</div><div class="ksub">Brands in loss</div></div>
 </div>
 
@@ -278,7 +278,7 @@ document.addEventListener('DOMContentLoaded',function(){
         <th class="r" style="color:#f85149">Discount Given</th>
         <th class="r" style="color:#3fb950">GR Earned</th>
         <th class="r" style="color:#f85149">CM1 (Loss)</th>
-        <th class="r">Disc / TXN</th><th class="r">Disc % GMV</th><th class="r">GR %</th>
+        <th class="r">Disc / TXN</th><th class="r">Disc % GR</th><th class="r">GR %</th>
         <th class="r">New</th><th class="r">Repeat</th><th class="r">Reactivated</th>
         <th class="r">New %</th><th>Recommendation</th>
       </tr></thead>
@@ -372,7 +372,7 @@ function rKPI(d){
   document.getElementById('k5').textContent=fn(nw);
   document.getElementById('k6').textContent=T?fv(G/T):'-';
   document.getElementById('k7').textContent=G?fp(R/G):'-';
-  document.getElementById('k8').textContent=G?fp(D/G):'-';
+  document.getElementById('k8').textContent=R?fp(D/R):'-';
   // neg CM1 count
   var brands=grpByFull(d,'BRANDNAME');
   var neg=brands.filter(function(b){return b.C<0;}).length;
@@ -434,7 +434,7 @@ function rBR(d){
       +'<td class="r">'+(b.T?fr(b.R/b.T):'-')+'</td>'
       +'<td class="r">'+(b.G?fp(b.R/b.G):'-')+'</td>'
       +'<td class="r">'+(b.T?fr(b.D/b.T):'-')+'</td>'
-      +'<td class="r">'+(b.G?fp(b.D/b.G):'-')+'</td>'
+      +'<td class="r">'+(b.R?fp(b.D/b.R):'-')+'</td>'
       +'<td class="r">'+(b.nw?fr(b.C/b.nw):'-')+'</td>'
       +'<td class="r '+(b.nw&&b.C/b.nw>=0?'g':'rd')+'">"'+(b.nw?fr(b.C/b.nw):'-')+'</td>'
       +'<td><span class="pill '+(pos?'pg':'pr')+'">'+(pos?'Profit':'Loss')+'</span></td></tr>';
@@ -473,14 +473,14 @@ function rCM(d){
   // Mini summary cards
   var cards='';
   neg.forEach(function(b){
-    var pct=b.G?((b.D/b.G)*100).toFixed(1):'0';
+    var pct=b.R?((b.D/b.R)*100).toFixed(1):'0';
     cards+='<div class="cm1card">'
       +'<div class="cm1brand">&#9888; '+b.k+'</div>'
       +'<div class="cm1stat"><span class="lbl">CM1 Loss</span><span class="val rd">'+fr(b.C)+'</span></div>'
       +'<div class="cm1stat"><span class="lbl">TXN</span><span class="val">'+fn(b.T)+'</span></div>'
       +'<div class="cm1stat"><span class="lbl">Discount Given</span><span class="val rd">'+fr(b.D)+'</span></div>'
       +'<div class="cm1stat"><span class="lbl">GR Earned</span><span class="val g">'+fr(b.R)+'</span></div>'
-      +'<div class="cm1stat"><span class="lbl">Disc % GMV</span><span class="val rd">'+pct+'%</span></div>'
+      +'<div class="cm1stat"><span class="lbl">Disc % GR</span><span class="val rd">'+pct+'%</span></div>'
       +'</div>';
   });
   pos.forEach(function(b){
@@ -514,7 +514,7 @@ function rCM(d){
       +'<td class="r g">'+fr(b.R)+'</td>'
       +'<td class="r rd" style="font-weight:700">'+fr(b.C)+'</td>'
       +'<td class="r">'+(b.T?fr(b.D/b.T):'-')+'</td>'
-      +'<td class="r rd">'+(b.G?fp(b.D/b.G):'-')+'</td>'
+      +'<td class="r rd">'+(b.R?fp(b.D/b.R):'-')+'</td>'
       +'<td class="r">'+(b.G?fp(b.R/b.G):'-')+'</td>'
       +'<td class="r" style="color:#388bfd">'+fn(b.nw)+'</td>'
       +'<td class="r" style="color:#3fb950">'+fn(b.ol)+'</td>'
