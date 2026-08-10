@@ -6,9 +6,6 @@
 <title>Coupon Partner Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
-function _fmt(d){return d.toISOString().slice(0,10);}
-function qsToday(el){var t=_fmt(new Date());qs(el,t,t);}
-function qsLast(el,n){var e=new Date(),s=new Date();s.setDate(e.getDate()-(n-1));qs(el,_fmt(s),_fmt(e));}
 </script>
 <script>
 function _fmt(d){var mo=String(d.getMonth()+1).padStart(2,'0'),dy=String(d.getDate()).padStart(2,'0');return d.getFullYear()+'-'+mo+'-'+dy;}
