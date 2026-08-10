@@ -4,10 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Coupon Partner Dashboard</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
 function _fmt(d){return d.toISOString().slice(0,10);}
 function qsToday(el){var t=_fmt(new Date());qs(el,t,t);}
 function qsLast(el,n){var e=new Date(),s=new Date();s.setDate(e.getDate()-(n-1));qs(el,_fmt(s),_fmt(e));}
+</script>
+<script>
+function _fmt(d){var mo=String(d.getMonth()+1).padStart(2,'0'),dy=String(d.getDate()).padStart(2,'0');return d.getFullYear()+'-'+mo+'-'+dy;}
+function qsToday(el){var t=_fmt(new Date());qs(el,t,t);}
+function qsLast(el,n){var e=new Date(),s=new Date();s.setDate(e.getDate()-(n-1));qs(el,_fmt(s),_fmt(e));}
+function qsAll(el){qs(el,'2026-04-01',_fmt(new Date()));}
 </script>
 <style>
 
@@ -140,7 +147,7 @@ document.addEventListener('DOMContentLoaded',function(){
   <button class="qbtn" onclick="qs(this,'2026-06-01','2026-06-30')">Jun 2026</button>
   <button class="qbtn" onclick="qs(this,'2026-07-01','2026-07-31')">Jul 2026</button>
   <button class="qbtn" onclick="qs(this,'2026-08-01','2026-08-03')">Aug 2026</button>
-  <button class="qbtn on" id="qAll" onclick="qs(this,'2026-04-01','2026-08-03')">All (Apr-Aug)</button>
+  <button class="qbtn on" id="qAll" onclick="qsAll(this)">All (Apr-Aug)</button>
   <span class="fl" style="margin-left:4px">From</span><input type="date" id="fd" value="2026-04-01">
   <span class="fl">To</span><input type="date" id="td" value="2026-08-03">
   <span class="fl">Brand</span><select id="bf"><option>All</option></select>
@@ -587,6 +594,14 @@ function renderAll(){
   try{rCM(FD);}catch(e){console.error('rCM:',e);}
 }
 try{renderAll();}catch(e){console.error("renderAll error:",e);}
+</script>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var td=document.getElementById('td');
+  if(td){td.value=_fmt(new Date());}
+  var qa=document.getElementById('qAll');
+  if(qa){qa.click();}
+});
 </script>
 </body>
 </html>
