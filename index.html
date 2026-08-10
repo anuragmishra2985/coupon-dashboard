@@ -12,6 +12,7 @@ function _fmt(d){var mo=String(d.getMonth()+1).padStart(2,'0'),dy=String(d.getDa
 function qsToday(el){var t=_fmt(new Date());qs(el,t,t);}
 function qsLast(el,n){var e=new Date(),s=new Date();s.setDate(e.getDate()-(n-1));qs(el,_fmt(s),_fmt(e));}
 function qsAll(el){qs(el,'2026-04-01',_fmt(new Date()));}
+function qsMonth(el,y,m){var s=y+'-'+String(m).padStart(2,'0')+'-01',last=new Date(y,m,0),today=new Date(),end=last<today?_fmt(last):_fmt(today);qs(el,s,end);}
 </script>
 <style>
 
@@ -139,11 +140,11 @@ document.addEventListener('DOMContentLoaded',function(){
   <button class="qbtn" onclick="qsToday(this)">Today</button>
   <button class="qbtn" onclick="qsLast(this,7)">Last 7 Days</button>
   <button class="qbtn" onclick="qsLast(this,30)">Last 30 Days</button>
-  <button class="qbtn" onclick="qs(this,'2026-04-01','2026-04-30')">Apr 2026</button>
-  <button class="qbtn" onclick="qs(this,'2026-05-01','2026-05-31')">May 2026</button>
-  <button class="qbtn" onclick="qs(this,'2026-06-01','2026-06-30')">Jun 2026</button>
-  <button class="qbtn" onclick="qs(this,'2026-07-01','2026-07-31')">Jul 2026</button>
-  <button class="qbtn" onclick="qs(this,'2026-08-01','2026-08-03')">Aug 2026</button>
+  <button class="qbtn" onclick="qsMonth(this,2026,4)">Apr 2026</button>
+  <button class="qbtn" onclick="qsMonth(this,2026,5)">May 2026</button>
+  <button class="qbtn" onclick="qsMonth(this,2026,6)">Jun 2026</button>
+  <button class="qbtn" onclick="qsMonth(this,2026,7)">Jul 2026</button>
+  <button class="qbtn" onclick="qsMonth(this,2026,8)">Aug 2026</button>
   <button class="qbtn on" id="qAll" onclick="qsAll(this)">All (Apr-Aug)</button>
   <span class="fl" style="margin-left:4px">From</span><input type="date" id="fd" value="2026-04-01">
   <span class="fl">To</span><input type="date" id="td" value="2026-08-03">
